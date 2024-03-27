@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data Form</title>
+</head>
+<body>
+    <h1>Submit Data Form</h1>
+    <form id="dataForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('dataForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const requestData = {
+                name: formData.get('name'),
+                description: formData.get('description')
+            };
+            
+            try {
+                const response = await fetch('/api/data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server responded with status ${response.status}`);
+                }
+                
+                const responseData = await response.json();
+                alert('Data submitted successfully!');
+                console.log('Server response:', responseData);
+            } catch (error) {
+                console.error('Error submitting data:', error.message);
+                alert('An error occurred while submitting data. Please try again later.');
+            }
+        });
+    </script>
+</body>
+</html>
