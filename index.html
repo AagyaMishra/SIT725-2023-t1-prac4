@@ -37,6 +37,7 @@
                     throw new Error(`Server responded with status ${response.status}`);
                 }
                 
+                
                 const responseData = await response.json();
                 alert('Data submitted successfully!');
                 console.log('Server response:', responseData);
